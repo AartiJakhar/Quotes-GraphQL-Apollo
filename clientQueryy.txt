@@ -1,0 +1,40 @@
+,,,,,,,,,,,,,,,,,,,
+query getAllUsers{
+  users{
+    id
+    firstName
+    email
+    lastName
+  }
+}
+query getAllUsers{
+  users{
+    firstName
+    lastName
+  
+ quotes{
+  name
+  by
+}}
+}
+
+
+,,,,,,,,,,,,
+query getAllQuotes{
+  quotes{
+    name
+  }
+}
+,,,,,,,,,,,
+query getUserById{
+  user(id:"2"){
+    lastName
+  }
+}
+,,,,,,,,,,,
+query getQuoteByby{
+  quote(by:"1"){
+    name
+    
+  }
+}
