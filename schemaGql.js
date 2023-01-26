@@ -3,13 +3,13 @@ import {gql} from "apollo-server"
 const typeDefs=gql`
  type Query{
     users:[User]
-    user(id:ID!):User
+    user(_id:ID!):User
     quotes:[Quote]
     quote(by:ID):[Quote]
     
 }
 type User{
-    id:ID! 
+    _id:ID! 
     firstName:String
     lastName:String
     email:String
@@ -22,12 +22,21 @@ type Quote{
 }
 type Mutation{
    signup(userNew:UserInput!):User
+   signin(user:MyuserInput!):Token
+}
+type Token{
+    token:String
+    user:User
 }
 input UserInput{
     firstName:String!
     lastName:String!
     email:String!
     password:String!
+}
+input MyuserInput{
+  email:String!
+  password:String!
 }
     `
     //  ID! -->! sign for required:true 
