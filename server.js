@@ -1,44 +1,27 @@
-import {ApolloServer,gql} from "apollo-server"
+import {ApolloServer  } from "apollo-server"
 import {ApolloServerPluginLandingPageGraphQLPlayground} from 'apollo-server-core'
-import {users,quotes} from './fakedb.js'
-//schema
-const typeDefs=gql`
- type Query{
-    users:[User]
-    user(id:ID!):User
-    quotes:[Quote]
-    quote(by:ID):[Quote]
- }
 
- type User{
-     id:ID! 
-     firstName:String
-     lastName:String
-     email:String
-     quotes:[Quote]
-    }
-    type Quote{
-        name:String
-        by:ID
-    }
-    `
-    //  ID! -->! sign for required:true 
-// ho query ko lega or response send krega 
-const resolvers={
-    Query:{
-        users:()=> {return users},
-        quotes:()=> quotes,
-        user:(parentundifenid,args)=>users.find(user=>user.id==args.id),
-        quote:(parentundifenid,ar)=>quotes.filter(quote=>quote.by==ar.by),
-    },
-    User:{
-        quotes:(user)=> quotes.filter(quote=>quote.by==user.id)
-    },
-    //yani user wale schema me query krne koi lge or ye query kre yani ye mangle to aqq use quotes ko filter kreke de skt ho 
-
-}
-
+import typeDefs from './schemaGql.js'
+import mongoose from "mongoose"
+import { MONGOURI } from "./config.js"
 //server
+
+mongoose.connect(MONGOURI,{
+    useNewUrlParser:true,
+    useUnifiedTopology:true
+})
+mongoose.connection.on("connected",()=>{
+    console.log('conencted to mongodb')
+})
+mongoose.connection.on("error",(err)=>{
+    console.log('eror while connecting to mongodb', err)
+})
+//modals
+import './modals/Quotes.js'
+import './modals/User.js'
+
+import resolvers from './resolvers.js'
+
 const server = new ApolloServer({
     //typeDefs:variable name of schema here
     typeDefs,
@@ -52,3 +35,4 @@ const server = new ApolloServer({
 server.listen().then(({url})=>{
     console.log(`server ready at ${url}`)
 })
+//mongodb+srv://aartijakhar:aarti2005@cluster0.6qxaf8t.mongodb.net/?retryWrites=true&w=majority

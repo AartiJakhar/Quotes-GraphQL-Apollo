@@ -38,3 +38,48 @@ query getQuoteByby{
     
   }
 }
+
+,,,,,,,,,,,,,,,,
+query getUserById($userid:ID!){
+  user(id:$userid){
+    firstName
+    lastName
+    id
+  }
+}
+//Query variable
+{
+  "userid": "1"
+}
+
+// Mutaion
+//////////////////
+mutation($firstName:String!,$lastName:String!,$email:String!,$password:String!){
+  signup(firstName:$firstName,lastName:$lastName,email:$email,password:$password){
+    firstName
+    lastName
+  }
+}
+//Query variable
+{
+  "firstName": "Manisha",
+  "lastName": "Ranva",
+  "email": "mr@mr.com",
+  "password": "mypassword"
+}
+ --------right way --------
+ mutation createuser($userNew:UserInput!){
+  user:signup(userNew:$userNew){
+    firstName
+    lastName
+  }
+}
+///with user: <-- a name that we want in response 
+{ 
+"userNew": {
+  "firstName": "kavya ",
+  "lastName": "Jakhar",
+  "email": "mrr@mr.com",
+  "password": "mypassword"
+}
+}
