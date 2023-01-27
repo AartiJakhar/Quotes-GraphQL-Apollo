@@ -1,10 +1,11 @@
 import { users, quotes } from "./fakedb.js";
 // ho query ko lega or response send krega
 import bcrypt from 'bcryptjs'
-import mongoose from "mongoose";
+import mongoose, { Query } from "mongoose";
 import jwt  from "jsonwebtoken";
 import { JWT_SECRET } from "./config.js";
 const User = mongoose.model("User")
+const Quote = mongoose.model("Quote")
 
 const resolvers = {
   Query: {
@@ -12,9 +13,17 @@ const resolvers = {
       const allUsers = await User.find()
       return allUsers
     },
-    quotes: () => quotes,
-    user: (_, args) => users.find((user) => user.id == args.id),
-    quote: (_, ar) => quotes.filter((quote) => quote.by == ar.by),
+    quotes: async() => await Quote.find().populate("by","_id firstName" ),
+    user: async(_, args) => {
+      const user = await  User.findOne({_id:args._id})
+      console.log(user)
+   return user
+    },
+    quote:async (_, ar,{userId}) => {
+      if(!userId){
+        throw new Error("You must be logged in")
+   }
+      return await Quote.find({by:ar.by})},
   },
   Mutation: {
     signup: async(_, { userNew }) => {
@@ -48,6 +57,18 @@ const resolvers = {
     
 
 },
+    createQuote:async(_,{name},{userId})=>{
+      //check if user loged in 
+      if(!userId){
+           throw new Error("You must be logged in")
+      }
+      const newquote = new Quote({
+        name,
+        by:userId
+      })
+      await newquote.save()
+      return "Quote saved successfully"
+    },
 },
 Token:{
   user:async(token)=>{
@@ -55,7 +76,12 @@ Token:{
   }
 },
   User: {
-    quotes: (user) => quotes.filter((quote) => quote.by == user.id),
+    quotes: async(user,_,{userId}) =>{ 
+       //check if user loged in 
+       if(!userId){
+        throw new Error("You must be logged in")
+   }
+      return await Quote.find({by:user.id})},
   },
   //yani user wale schema me query krne koi lge or ye query kre yani ye mangle to aqq use quotes ko filter kreke de skt ho
 };

@@ -3,7 +3,7 @@ import {ApolloServerPluginLandingPageGraphQLPlayground} from 'apollo-server-core
 
 import typeDefs from './schemaGql.js'
 import mongoose from "mongoose"
-import { MONGOURI } from "./config.js"
+import { JWT_SECRET, MONGOURI } from "./config.js"
 //server
 
 mongoose.connect(MONGOURI,{
@@ -21,12 +21,15 @@ import './modals/Quotes.js'
 import './modals/User.js'
 
 import resolvers from './resolvers.js'
+import { context } from "./midleware/context.js"
 
 const server = new ApolloServer({
     //typeDefs:variable name of schema here
     typeDefs,
      //resolvers:query ko answer send krna wala object here
     resolvers,
+    //add midleware
+    context:context,
     //to test or run apis
     plugins:[
      ApolloServerPluginLandingPageGraphQLPlayground()
