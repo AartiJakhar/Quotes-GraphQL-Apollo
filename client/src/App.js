@@ -1,6 +1,8 @@
 import React from 'react'
 import './App.css'
 import {routes} from './components/router'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   useRoutes
 } from "react-router-dom";
@@ -10,6 +12,7 @@ function App() {
   return (
     <>
       <Navbar/>
+      <ToastContainer/>
       <div className='bg-gray-100'>
      
      {element}

@@ -1,10 +1,13 @@
 import React , {useState} from 'react'
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useMutation } from '@apollo/client';
+import { createuser } from '../queries/query';
 export default function Signup() {
+    const navigate=useNavigate()
+    const [addTodo, { data, loading, error }] = useMutation(createuser);
     const [credentials, setCredentials] = useState({})
-    const [error, setError] = useState("")
     const onChangeCredentials=(e)=>{
           setCredentials({...credentials,[e.target.name]:e.target.value})
          
@@ -12,20 +15,9 @@ export default function Signup() {
 
     const signUp=async(e)=>{
              e.preventDefault()
+             addTodo({ variables: { userNew: credentials } });
              console.log(credentials)
-            // let data = await fetch(`${process.env.authUrl}/api/signup`,{
-            //     method: 'POST',
-            //     headers: {
-            //       'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify({name:credentials.name,email:credentials.email,password:credentials.password})
-            //   })
-            //   const res= await data.json()
-            const res={success:true,error:""}
-              if(res.success){
-                  localStorage.setItem('token',res.authtoken)
-                  localStorage.setItem('email',res.email)
-                  setCredentials({name:"",email:"",password:""})
+                  console.log(data)
                   toast.success('🦄 You have Created Your account', {
                   position: "top-right",
                   autoClose: 2000,
@@ -36,13 +28,10 @@ export default function Signup() {
                   progress: undefined,
                   theme: "light",
                   });
-                 setError("")
                   setTimeout(() => {
-                    //   router.push(`${nextauthUrl}`)
+                    navigate("/signin")
                   }, 2000);
-              }else{
-         setError(res.error)
-              }
+              
      
        
     }
@@ -63,12 +52,12 @@ export default function Signup() {
             </h1>
             <form className="space-y-4 md:space-y-6" action="#" onSubmit={signUp}>
                 <div>
-                    <label htmlFor="firstname" className="block mb-2 text-sm font-medium text-pink-900 dark:text-black">Your name</label>
-                    <input type="text"  minLength={4} required name="firstname" id="firstname" onChange={onChangeCredentials} className="bg-white-50 border border-gray-300 text-pink-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-white-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name" />
+                    <label htmlFor="firstName" className="block mb-2 text-sm font-medium text-pink-900 dark:text-black">Your name</label>
+                    <input type="text"  minLength={4} required name="firstName" id="firstName" onChange={onChangeCredentials} className="bg-white-50 border border-gray-300 text-pink-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-white-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name" />
                 </div>
                 <div>
-                    <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-pink-900 dark:text-black">Your last Name</label>
-                    <input type="text"  minLength={4} required name="lastname" id="lastname" onChange={onChangeCredentials} className="bg-white-50 border border-gray-300 text-pink-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-white-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name" />
+                    <label htmlFor="lastName" className="block mb-2 text-sm font-medium text-pink-900 dark:text-black">Your last Name</label>
+                    <input type="text"  minLength={4} required name="lastName" id="lastName" onChange={onChangeCredentials} className="bg-white-50 border border-gray-300 text-pink-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-white-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name" />
                 </div>
                 <div>
                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-pink-900 dark:text-black">Your email</label>

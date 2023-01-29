@@ -3,7 +3,7 @@ import {gql} from "apollo-server"
 const typeDefs=gql`
  type Query{
     users:[User]
-    user(_id:ID!):User
+    user:User
     quotes:[QuotesWithName]
     quote(by:ID):[Quote]
     

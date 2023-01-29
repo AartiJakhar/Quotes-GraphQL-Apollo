@@ -1,4 +1,3 @@
-import { users, quotes } from "./fakedb.js";
 // ho query ko lega or response send krega
 import bcrypt from 'bcryptjs'
 import mongoose, { Query } from "mongoose";
@@ -14,9 +13,11 @@ const resolvers = {
       return allUsers
     },
     quotes: async() => await Quote.find().populate("by","_id firstName" ),
-    user: async(_, args) => {
-      const user = await  User.findOne({_id:args._id})
-      console.log(user)
+    user: async(_, args,{userId}) => {
+      if(!userId){
+        throw new Error("You must be logged in")
+   }
+      const user = await  User.findOne({_id:userId})
    return user
     },
     quote:async (_, ar,{userId}) => {
