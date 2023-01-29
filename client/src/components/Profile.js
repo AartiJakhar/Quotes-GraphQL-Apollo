@@ -36,19 +36,22 @@ const { loading, error, data } = useQuery(getUserById);
           </div>
         </div>
       </div>
-    {data.user.quotes.length>0&&  <div className="my-10 shadow-lg bg-white py-10   rounded-lg flex md:flex-row flex-row flex-wrap justify-around ">
+    {data.user.quotes.length>0&&  <div className="my-10 py-10 w-1/2 mx-auto   rounded-lg flex max-md:flex-row flex-col flex-wrap justify-around ">
+      <div className="text-center">
+        <h1 className="text-3xl border-spacing-6 font-bold my-2"> Your Quotes</h1>
+      </div>
         {data.user.quotes.map((e)=>{
           return (
-            <blockquote key={Math.random()} className="block mx-10 py-2  text-gray-800">
+            <blockquote key={Math.random()} className="block mx-10 py-2 shadow-lg bg-white p-4 m-4 text-gray-800 hover:scale-110 transition-transform">
                 <h6>"{e.name}"</h6>
-                <h3 className="text-xl text-gray-900 px-2"> - {data.user.firstName + " " + data.user.lastName}</h3>
+                <h3 className="text-xl text-gray-900 px-2 text-right"> - {data.user.firstName + " " + data.user.lastName}</h3>
             </blockquote>
 
           )
         })}
      
       </div>}
-      <div className="my-10  py-10   flex justify-center ">
+      <div className="my-3  py-10   flex justify-center ">
           <AddQuote/>
       </div>
     </div>

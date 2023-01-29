@@ -7,6 +7,7 @@ import {
   useRoutes
 } from "react-router-dom";
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 function App() {
   const element = useRoutes(routes)
   return (
@@ -18,6 +19,7 @@ function App() {
      {element}
 
       </div>
+      <Footer/>
     </>
   )
 }

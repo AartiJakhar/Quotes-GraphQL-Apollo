@@ -3,10 +3,12 @@ import { Link ,useNavigate} from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useMutation } from '@apollo/client';
-import { login } from '../queries/query';
+import { getUserById, login } from '../queries/query';
 export default function Signin() {
     const navigate=useNavigate()
-      const [addTodo, { data, loading, error }] = useMutation(login);
+      const [addTodo, { data, loading, error }] = useMutation(login,{
+        refetchQueries: [getUserById, "getUserById"  ],
+      });
     const [credentials, setCredentials] = useState({})
     const onChangeCredentials=(e)=>{
           setCredentials({...credentials,[e.target.name]:e.target.value})

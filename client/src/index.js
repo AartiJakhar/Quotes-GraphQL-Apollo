@@ -9,7 +9,7 @@ const client = new ApolloClient({
   uri: 'http://localhost:4000/',
   cache: new InMemoryCache(),
   headers:{
-   "authtoken":localStorage.getItem('token' ) || ""
+   "authtoken":localStorage.getItem('token' ) 
   }
 });
 const root = ReactDOM.createRoot(document.getElementById('root'));
