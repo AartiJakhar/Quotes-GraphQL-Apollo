@@ -1,11 +1,14 @@
 import { useQuery } from "@apollo/client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getUserById } from "../queries/query";
 
 import AddQuote from "./AddQuote";
 export default function Profile() {
   
 const { loading, error, data } = useQuery(getUserById);
+useEffect(()=>{
+console.log('yaa')
+},[data])
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
   return (

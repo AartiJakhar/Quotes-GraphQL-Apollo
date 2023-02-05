@@ -6,7 +6,7 @@ import { useMutation } from '@apollo/client';
 import { getUserById, login } from '../queries/query';
 export default function Signin() {
     const navigate=useNavigate()
-      const [addTodo, { data, loading, error }] = useMutation(login,{
+      const [signin, { data, loading, error }] = useMutation(login,{
         refetchQueries: [getUserById, "getUserById"  ],
       });
     const [credentials, setCredentials] = useState({})
@@ -17,7 +17,7 @@ export default function Signin() {
     
     const signUp=async(e)=>{
              e.preventDefault()
-              addTodo({ variables: { user: credentials } });
+              signin({ variables: { user: credentials } });
               
             }
             useEffect(() => {
